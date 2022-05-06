@@ -36,4 +36,27 @@ class Blockchain{
         newBlock.hash = newBlock.calculateHash();
         this.chain.push(newBlock);
     }
+    // checks if the chain is valid
+    isValidChain(){
+        for(let i = 1; i < this.chain.length;i++){
+            var currBlock = this.chain[i];
+            var prevBlock = this.chain[i-1];
+            // making sure the hash of the previous block is the same as the previous hash of the current block
+            if (currBlock.previousHash !== prevBlock.hash){
+                return false;
+            }
+            // making sure the hash is equal
+            if(currBlock.hash !== currBlock.calculateHash()){
+                return false;
+            }
+        }
+        return true;
+    }
 }
+
+let vanCoin = new Blockchain();
+vanCoin.addNewBlock(new Block("05/05/2022",{amount:50}));
+vanCoin.addNewBlock(new Block("05/06/2022",{amount:500}));
+
+console.log(JSON.stringify(vanCoin, null, 5))
+console.log(vanCoin.isValidChain());
